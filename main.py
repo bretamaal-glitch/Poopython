@@ -1,5 +1,7 @@
 from paciente import Paciente
-pacientes: list[Paciente] = []
+from typing import Optional
+pacientes: list[Paciente] = [Paciente("12345678-9", "Robert Pattinson", 40, "Fonasa"), Paciente("98765432-1", "Kristen Stewart", 33, "Isapre")]
+PREVISION_ACTUALIZADA = "Previsión actualizada"
 
 def leer_numero(mensaje: str) -> int:
     while True:
@@ -50,6 +52,80 @@ def agregar_paciente()-> None:
     print("Paciente agregado exitosamente.")
     print(f"Total de pacientes: {len(pacientes)}")
 
+def imprimir_pacientes() -> None:
+    if len(pacientes) == 0:
+        print("No hay pacientes registrados")
+    else: 
+        for paciente in pacientes:
+            print(paciente)
+            print("-"*20)
+
+def buscar_paciente() -> Optional[Paciente]:
+    rut = input("Ingrese el RUT del paciente: ")
+    for p in pacientes:
+        if p.rut == rut:
+            return p
+    return None
+
+
+def imprimir_paciente() -> None:
+    paciente=buscar_paciente()
+    if paciente:
+        print(paciente)
+    else:
+        print("No se pudo mostrar el paciente.")
+
+def eliminar_paciente() -> None:
+    paciente = buscar_paciente()
+    if paciente:
+        pacientes.remove(paciente)
+        print("Paciente eliminado")
+    else:
+        print("No se encontró el paciente.")
+
+def editar_paciente() -> None:
+    paciente=buscar_paciente()
+    if paciente:
+        print(paciente)
+        print("Menú de edición:")
+        print("1. Editar nombre")
+        print("2. Editar edad")
+        print("3. Editar previsión")
+        print("0. Salir")
+        op=leer_numero("Ingrese una opción: ")
+        if op==1:
+            nuevo_nombre=input("Ingrese el nuevo nombre: ")
+            paciente.nombre=nuevo_nombre
+            print("Nombre actualizado")
+        elif op==2:
+            nueva_edad=leer_numero("Ingrese la nueva edad: ")
+            paciente.edad=nueva_edad
+            print("Edad actualizada")
+        elif op==3:
+            print("Tipos de previsión")
+            print("1. Fonasa")
+            print("2. Isapre")
+            print("3. Particular")
+            print("4. Otro")
+            op=leer_numero("Seleccione una previsión del paciente: ")
+            if op == 1:
+                paciente.prevision = "Fonasa"
+                print(PREVISION_ACTUALIZADA)
+            elif op == 2:
+                paciente.prevision = "Isapre"
+                print(PREVISION_ACTUALIZADA)
+            elif op == 3:
+                paciente.prevision = "Particular"
+                print(PREVISION_ACTUALIZADA)
+            elif op == 4:
+                paciente.prevision = "Otro"
+                print(PREVISION_ACTUALIZADA)
+            else:
+                print("Opción de previsión no válida.")              
+    else: 
+        print("No se encontró el paciente.")
+
+
 def main():
     while True:
         opcion = menu()
@@ -57,12 +133,16 @@ def main():
             agregar_paciente()
         elif opcion == 2:
             print("Editar paciente")
+            editar_paciente()
         elif opcion == 3:
             print("Eliminar paciente")
+            eliminar_paciente()
         elif opcion == 4:
             print("Mostrar un paciente")
+            imprimir_paciente()
         elif opcion == 5:
             print("Mostrar todos los pacientes")
+            imprimir_pacientes()
         elif opcion == 0:
             print("Saliendo...")
             break
