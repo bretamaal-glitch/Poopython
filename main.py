@@ -1,7 +1,13 @@
 from paciente import Paciente
 from typing import Optional
+from departamento import Departamento
+from typing import Optional
+
+departamentos: list[Departamento] = [Departamento(1, "Cardiología", 2), Departamento(2, "Neurología", 3)]
 pacientes: list[Paciente] = [Paciente("12345678-9", "Robert Pattinson", 40, "Fonasa"), Paciente("98765432-1", "Kristen Stewart", 33, "Isapre")]
 PREVISION_ACTUALIZADA = "Previsión actualizada"
+MENSAJE_OPCION = "Ingrese una opción: "
+OPCION_SALIR = "0. Salir"
 
 def leer_numero(mensaje: str) -> int:
     while True:
@@ -20,8 +26,13 @@ def menu():
     print("3. Eliminar paciente")
     print("4. Mostrar un paciente")
     print("5. Mostrar todos los pacientes")
-    print("0. Salir")
-    op=leer_numero("Ingrese una opción: ")
+    print("6. Agregar departamento")
+    print("7. Editar departamento")
+    print("8. Eliminar departamento")
+    print("9. Mostrar un departamento")
+    print("10. Mostrar todos los departamentos")
+    print(OPCION_SALIR)
+    op=leer_numero(MENSAJE_OPCION)
     print("="*20)
     return op
 
@@ -91,8 +102,8 @@ def editar_paciente() -> None:
         print("1. Editar nombre")
         print("2. Editar edad")
         print("3. Editar previsión")
-        print("0. Salir")
-        op=leer_numero("Ingrese una opción: ")
+        print(OPCION_SALIR)
+        op=leer_numero(MENSAJE_OPCION)
         if op==1:
             nuevo_nombre=input("Ingrese el nuevo nombre: ")
             paciente.nombre=nuevo_nombre
@@ -126,6 +137,63 @@ def editar_paciente() -> None:
         print("No se encontró el paciente.")
 
 
+def agregar_departamento()-> None:
+    id_departamento = leer_numero("Ingrese el ID del departamento: ")
+    nombre = input("Ingrese el nombre del departamento: ")
+    piso = leer_numero("Ingrese el piso del departamento: ")
+    departamento = Departamento(id_departamento, nombre, piso)
+    departamentos.append(departamento)
+    print("Departamento agregado exitosamente.")
+
+def imprimir_departamentos() -> None:
+    if len(departamentos) == 0:
+        print("No hay departamentos registrados")
+    else: 
+        for departamento in departamentos:
+            print(departamento)
+            print("-"*20)
+
+def buscar_departamento() -> Optional[Departamento]:
+    id_departamento = input("Ingrese el ID del departamento: ")
+    for d in departamentos:
+        if d.id_departamento == id_departamento:
+            return d
+    return None
+
+
+def imprimir_departamento() -> None:
+    departamento=buscar_departamento()
+    if departamento:
+        print(departamento)
+    else:
+        print("No se pudo mostrar el departamento.")
+
+def eliminar_departamento() -> None:
+    departamento= buscar_departamento()
+    if departamento:
+        departamentos.remove(departamento)
+        print("Departamento eliminado")
+    else:
+        print("No se encontró el departamento")
+
+def editar_departamento() -> None:
+    departamento=buscar_departamento()
+    if departamento:
+        print(departamento)
+        print("Menú de edición")
+        print("1. Editar nombre")
+        print("2. Editar piso")
+        print(OPCION_SALIR)
+        op=leer_numero("Ingrese una opción: ")
+        if op==1:
+            nuevo_nombre=input("Ingrese el nuevo nombre: ")
+            departamento.nombre=nuevo_nombre
+            print("Nombre actualizado")
+        elif op==2:
+            nuevo_piso=leer_numero("Ingrese el nuevo piso: ")
+            departamento.piso=nuevo_piso
+            print("Piso actualizado")
+
 def main():
     while True:
         opcion = menu()
@@ -143,6 +211,21 @@ def main():
         elif opcion == 5:
             print("Mostrar todos los pacientes")
             imprimir_pacientes()
+        elif opcion == 6:
+            print("Agregar departamento")
+            agregar_departamento()
+        elif opcion == 7:
+            print("Editar departamento")
+            editar_departamento()
+        elif opcion == 8:
+            print("Eliminar departamento")
+            eliminar_departamento()
+        elif opcion == 9:
+            print("Mostrar un departamento")
+            imprimir_departamento()
+        elif opcion == 10:
+            print("Mostrar todos los departamentos")
+            imprimir_departamentos()
         elif opcion == 0:
             print("Saliendo...")
             break
@@ -150,9 +233,10 @@ def main():
             print("Opción no válida. Por favor, ingrese una opción válida.")
 
 
-
-
-
 if __name__ == "__main__":
     main()
+
+
+
+
 
