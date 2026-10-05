@@ -17,7 +17,6 @@ def leer_numero(mensaje: str) -> int:
         except ValueError:
             print("Error: Debe ingresar un número entero.")
             
-
 def menu():
     print("="*20)
     print("Menú Clínica")
@@ -58,7 +57,11 @@ def agregar_paciente()-> None:
         print("Opción de previsión no válida.")
         return
 
-    paciente = Paciente(rut, nombre, edad, prevision)
+    try:
+        paciente = Paciente(rut, nombre, edad, prevision)
+    except (ValueError, TypeError) as e:
+        print(f"Error al agregar paciente: {e}")
+        return
     pacientes.append(paciente)
     print("Paciente agregado exitosamente.")
     print(f"Total de pacientes: {len(pacientes)}")
@@ -95,46 +98,60 @@ def eliminar_paciente() -> None:
         print("No se encontró el paciente.")
 
 def editar_paciente() -> None:
-    paciente=buscar_paciente()
-    if paciente:
-        print(paciente)
-        print("Menú de edición:")
-        print("1. Editar nombre")
-        print("2. Editar edad")
-        print("3. Editar previsión")
-        print(OPCION_SALIR)
-        op=leer_numero(MENSAJE_OPCION)
-        if op==1:
-            nuevo_nombre=input("Ingrese el nuevo nombre: ")
-            paciente.nombre=nuevo_nombre
-            print("Nombre actualizado")
-        elif op==2:
-            nueva_edad=leer_numero("Ingrese la nueva edad: ")
-            paciente.edad=nueva_edad
-            print("Edad actualizada")
-        elif op==3:
-            print("Tipos de previsión")
-            print("1. Fonasa")
-            print("2. Isapre")
-            print("3. Particular")
-            print("4. Otro")
-            op=leer_numero("Seleccione una previsión del paciente: ")
-            if op == 1:
-                paciente.prevision = "Fonasa"
-                print(PREVISION_ACTUALIZADA)
-            elif op == 2:
-                paciente.prevision = "Isapre"
-                print(PREVISION_ACTUALIZADA)
-            elif op == 3:
-                paciente.prevision = "Particular"
-                print(PREVISION_ACTUALIZADA)
-            elif op == 4:
-                paciente.prevision = "Otro"
-                print(PREVISION_ACTUALIZADA)
-            else:
-                print("Opción de previsión no válida.")              
-    else: 
+    paciente = buscar_paciente()
+    if not paciente:
         print("No se encontró el paciente.")
+        return
+
+    print(paciente)
+    print("Menú de edición:")
+    print("1. Editar nombre")
+    print("2. Editar edad")
+    print("3. Editar previsión")
+    print(OPCION_SALIR)
+    op = leer_numero(MENSAJE_OPCION)
+
+    if op == 1:
+        nuevo_nombre = input("Ingrese el nuevo nombre: ")
+        try:
+            paciente.nombre = nuevo_nombre
+        except ValueError as e:
+            print(f"Error al actualizar el nombre: {e}")
+            return
+        print("Nombre actualizado")
+        return
+
+    if op == 2:
+        nueva_edad = leer_numero("Ingrese la nueva edad: ")
+        try:
+            paciente.edad = nueva_edad
+        except (ValueError, TypeError) as e:
+            print(f"Error al actualizar la edad: {e}")
+            return
+        print("Edad actualizada")
+        return
+
+    if op == 3:
+        print("Tipos de previsión")
+        print("1. Fonasa")
+        print("2. Isapre")
+        print("3. Particular")
+        print("4. Otro")
+
+        opciones_prevision = {
+            1: "Fonasa",
+            2: "Isapre",
+            3: "Particular",
+            4: "Otro",
+        }
+        op_prevision = leer_numero("Seleccione una previsión del paciente: ")
+
+        if op_prevision in opciones_prevision:
+            paciente.prevision = opciones_prevision[op_prevision]
+            print(PREVISION_ACTUALIZADA)
+            return
+
+        print("Opción de previsión no válida.")
 
 
 def agregar_departamento()-> None:
@@ -154,7 +171,7 @@ def imprimir_departamentos() -> None:
             print("-"*20)
 
 def buscar_departamento() -> Optional[Departamento]:
-    id_departamento = input("Ingrese el ID del departamento: ")
+    id_departamento = leer_numero("Ingrese el ID del departamento: ")
     for d in departamentos:
         if d.id_departamento == id_departamento:
             return d
