@@ -54,8 +54,9 @@ class Database:
             print(f"Error al inicializar la base de datos: {e}")
         finally:
             conn.close()
-
-
-
+if __name__ == "__main__":
+    db=Database()
+    db.init_db()
+    print("Base de datos inicializada correctamente.")
 
     
