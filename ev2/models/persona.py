@@ -3,11 +3,7 @@ import re
 from validaciones import validar_texto
 
 
-class Persona:
-    """
-    Modelo (DTO) para la entidad Persona.
-    Tabla: persona (id_persona, nombre, email, telefono).
-    """
+class Persona:   
     PATRON_EMAIL = re.compile(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$")
     PATRON_TELEFONO = re.compile(r"^\+?[0-9 ]{7,15}$")
 

@@ -11,11 +11,6 @@ if TYPE_CHECKING:
 
 
 class Proyecto:
-    """
-    Modelo (DTO) para la entidad Proyecto.
-    Tabla: proyecto (id_proyecto, nombre, fecha_inicio).
-    La relación con empleados se guarda en la tabla empleado_proyecto.
-    """
 
     def __init__(self, id_proyecto: str, nombre: str, fecha_inicio: date):
         self.id_proyecto = id_proyecto
