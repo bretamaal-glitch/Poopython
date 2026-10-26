@@ -7,7 +7,7 @@ from models.validaciones_dao import generar_id
 
 
 class EmpleadoController(ControladorBase):
-    """Operaciones de la pantalla de empleados (CRUD, búsqueda y asignaciones)."""
+    """CRUD"""
 
     def __init__(self):
         super().__init__("Empleados", [

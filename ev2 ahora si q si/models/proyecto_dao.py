@@ -17,10 +17,6 @@ class ProyectoDAO:
     aquí si el empleado ya existe; si no, la guarda EmpleadoDAO.crear.
     Los registros de tiempo se guardan con RegistroTiempoDAO.
     """
-
-    # ------------------------------------------------------------------
-    # Lectura
-    # ------------------------------------------------------------------
     @staticmethod
     def _cargar(id_proyecto: str, cache: dict) -> Proyecto | None:
         clave = ("proyecto", id_proyecto)
@@ -86,9 +82,6 @@ class ProyectoDAO:
             print(f"Error al buscar proyectos: {e}")
         return proyectos
 
-    # ------------------------------------------------------------------
-    # Escritura
-    # ------------------------------------------------------------------
     @staticmethod
     def crear(proyecto: Proyecto) -> bool:
         conn = Database().get_connection()

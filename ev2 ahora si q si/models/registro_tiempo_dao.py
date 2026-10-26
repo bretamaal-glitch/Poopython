@@ -18,9 +18,6 @@ class RegistroTiempoDAO:
     empleado está asignado a ese proyecto (lo exige la clave compuesta de la tabla).
     """
 
-    # ------------------------------------------------------------------
-    # Lectura
-    # ------------------------------------------------------------------
     @staticmethod
     def _cargar(id_registro: str, cache: dict) -> RegistroTiempo | None:
         clave = ("registro", id_registro)
@@ -65,9 +62,6 @@ class RegistroTiempoDAO:
             print(f"Error al obtener el registro de tiempo: {e}")
             return None
 
-    # ------------------------------------------------------------------
-    # Escritura
-    # ------------------------------------------------------------------
     @staticmethod
     def crear(registro: RegistroTiempo) -> bool:
         conn = Database().get_connection()

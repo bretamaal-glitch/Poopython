@@ -16,10 +16,6 @@ class DepartamentoDAO:
     El gerente es un empleado y debe existir en la base antes de guardar el departamento.
     Los miembros se actualizan aquí solo si ya existen; los demás se guardan al crearse.
     """
-
-    # ------------------------------------------------------------------
-    # Lectura
-    # ------------------------------------------------------------------
     @staticmethod
     def _cargar(id_departamento: str, cache: dict) -> Departamento | None:
         clave = ("departamento", id_departamento)
@@ -76,9 +72,6 @@ class DepartamentoDAO:
             print(f"Error al buscar departamentos: {e}")
         return departamentos
 
-    # ------------------------------------------------------------------
-    # Escritura
-    # ------------------------------------------------------------------
     @staticmethod
     def crear(departamento: Departamento) -> bool:
         conn = Database().get_connection()

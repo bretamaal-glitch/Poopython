@@ -31,9 +31,6 @@ class EmpleadoDAO:
         JOIN persona p ON p.id_persona = e.id_persona
     """
 
-    # ------------------------------------------------------------------
-    # Lectura
-    # ------------------------------------------------------------------
     @staticmethod
     def _cargar(id_empleado: str, cache: dict) -> Empleado | None:
         clave = ("empleado", id_empleado)
@@ -117,10 +114,7 @@ class EmpleadoDAO:
         except (ValueError, TypeError, sqlite3.Error) as e:
             print(f"Error al buscar empleados: {e}")
         return empleados
-
-    # ------------------------------------------------------------------
-    # Escritura
-    # ------------------------------------------------------------------
+    
     @staticmethod
     def crear(empleado: Empleado) -> bool:
         conn = Database().get_connection()

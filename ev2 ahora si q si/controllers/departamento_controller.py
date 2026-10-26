@@ -6,7 +6,7 @@ from models.validaciones_dao import generar_id
 
 
 class DepartamentoController(ControladorBase):
-    """Operaciones de la pantalla de departamentos (CRUD, búsqueda y miembros)."""
+    """CRUD"""
 
     def __init__(self):
         super().__init__("Departamentos", [
