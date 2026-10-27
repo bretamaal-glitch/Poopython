@@ -6,7 +6,7 @@ from models.validaciones_dao import generar_id
 
 
 class DepartamentoController(ControladorBase):
-    """CRUD"""
+    
 
     def __init__(self):
         super().__init__("Departamentos", [
@@ -67,7 +67,7 @@ class DepartamentoController(ControladorBase):
             if nuevo_gerente is None:
                 self.view.mostrar_mensaje(f"No existe un empleado con ID {id_gerente}.")
                 return
-            departamento.gerente = nuevo_gerente   # el nuevo gerente pasa a ser miembro
+            departamento.gerente = nuevo_gerente   
         if DepartamentoDAO.actualizar(departamento):
             self.view.mostrar_mensaje("Departamento actualizado.")
         else:

@@ -12,18 +12,7 @@ from models.validaciones_dao import (
 
 
 class EmpleadoDAO:
-    """
-    Data Access Object para la entidad Empleado (hereda de Persona).
-    Un empleado se guarda en dos tablas: persona (datos personales) y empleado (datos laborales).
-
-    Al guardar, las relaciones solo se escriben si el otro lado ya existe en la base:
-    - departamento: se guarda aquí si ya existe; si no, lo guarda DepartamentoDAO.crear.
-    - proyectos: cada asignación se guarda aquí si el proyecto ya existe; si no, la guarda ProyectoDAO.crear.
-
-    Al leer, cada objeto se construye una sola vez por consulta (caché), así el gerente de un
-    departamento es el mismo objeto que el empleado que se pidió.
-    """
-
+    
     SQL_LECTURA = """
         SELECT e.id_empleado, e.id_persona, e.fecha_contrato, e.salario, e.estado,
                p.nombre, p.email, p.telefono, p.direccion
@@ -46,7 +35,7 @@ class EmpleadoDAO:
                             fila["salario"])
         if fila["estado"] != "Activo":
             empleado.cambiar_estado(fila["estado"])
-        cache[clave] = empleado          # se registra antes de completarlo: evita ciclos
+        cache[clave] = empleado          
         EmpleadoDAO._completar(empleado, cache)
         return empleado
 
@@ -58,7 +47,7 @@ class EmpleadoDAO:
             return
         cache[marca] = True
 
-        # Importaciones locales: los DAO se referencian entre sí y así evitamos el ciclo.
+        
         from models.departamento_dao import DepartamentoDAO
         from models.proyecto_dao import ProyectoDAO
         from models.registro_tiempo_dao import RegistroTiempoDAO
@@ -66,8 +55,7 @@ class EmpleadoDAO:
         id_depto = consultar(
             "SELECT id_departamento FROM empleado WHERE id_empleado = ?", (empleado.id_empleado,)
         )[0]["id_departamento"]
-        # Si el departamento se está construyendo (este empleado es su gerente o está en
-        # proceso), el propio departamento lo asigna al terminar.
+        
         if id_depto is not None and ("en_construccion", "departamento", id_depto) not in cache:
             departamento = DepartamentoDAO._cargar(id_depto, cache)
             departamento.asignar_empleado(empleado)   # no hace nada si ya es miembro
@@ -176,7 +164,7 @@ class EmpleadoDAO:
             )
             actualizado = cursor.rowcount > 0
 
-            # Sincroniza las asignaciones. Si se quita una que tiene registros, SQLite lo impide.
+           
             if ids_proyectos:
                 cursor.execute(
                     f"DELETE FROM empleado_proyecto WHERE id_empleado = ? AND id_proyecto NOT IN ({marcas(ids_proyectos)})",
@@ -199,10 +187,7 @@ class EmpleadoDAO:
 
     @staticmethod
     def eliminar(id_empleado: str) -> bool:
-        """
-        Borra la fila de empleado. Sus registros y asignaciones se borran en cascada.
-        La persona se conserva. Falla si el empleado es gerente de un departamento (RESTRICT).
-        """
+        
         conn = Database().get_connection()
         try:
             cursor: Cursor = conn.cursor()

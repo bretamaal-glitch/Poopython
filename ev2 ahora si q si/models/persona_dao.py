@@ -9,11 +9,7 @@ from models.validaciones_dao import consultar, validar_id, validar_no_existe
 
 
 class PersonaDAO:
-    """
-    Data Access Object para la entidad Persona.
-    Maneja todas las operaciones CRUD en la tabla persona.
-    """
-
+    
     @staticmethod
     def crear(persona: Persona) -> bool:
         conn = Database().get_connection()

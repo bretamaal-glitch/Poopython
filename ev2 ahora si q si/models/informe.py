@@ -52,7 +52,7 @@ class Informe:
 
     @staticmethod
     def _celda(valor) -> str:
-        # El separador es ';', así que se reemplaza dentro de cada celda.
+        
         return str(valor).replace(";", ",").replace("\n", " ")
 
     def generar(self, empleados=(), proyectos=(), departamentos=(), registros=()) -> None:
@@ -63,7 +63,7 @@ class Informe:
                       e.departamento.nombre if e.departamento else "Sin departamento"] for e in empleados]
         elif self.tipo == "proyecto":
             encabezado = "id;nombre;descripcion;fecha_inicio;empleados"
-            filas = [[p.id_proyecto, p.nombre, p.descripcion, p.fecha_inicio.isoformat(),
+            filas = [[p.id_proyecto, p.nombre, p.descripcion, p.fecha_inicio.strftime("%d-%m-%Y"),
                       len(p.empleados)] for p in proyectos]
         elif self.tipo == "departamento":
             encabezado = "id;nombre;gerente;empleados"
@@ -71,7 +71,7 @@ class Informe:
                       len(d.empleados)] for d in departamentos]
         else:
             encabezado = "id;fecha;horas;proyecto;empleado;descripcion"
-            filas = [[r.id_registro, r.fecha.isoformat(), r.horas_trabajadas, r.proyecto.id_proyecto,
+            filas = [[r.id_registro, r.fecha.strftime("%d-%m-%Y"), r.horas_trabajadas, r.proyecto.id_proyecto,
                       r.id_empleado, r.descripcion] for r in registros]
         lineas = [f"Informe {self.id_informe} ({self.tipo})", encabezado]
         lineas += [";".join(self._celda(c) for c in fila) for fila in filas]

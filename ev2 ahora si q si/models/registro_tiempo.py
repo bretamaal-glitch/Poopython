@@ -1,18 +1,11 @@
 from __future__ import annotations
-
 from datetime import date
-
 from models.proyecto import Proyecto
 from models.validaciones import validar_fecha, validar_numero, validar_texto
 
 
 class RegistroTiempo:
-    """
-    Modelo (DTO) para la entidad RegistroTiempo.
-    Tabla: registro_tiempo (id_registro, id_empleado, id_proyecto, fecha, horas_trabajadas, descripcion).
-    Pertenece a un empleado (composición) y se registra en un proyecto.
-    """
-    HORAS_MAXIMAS_DIA = 24
+    horas_maximas_dia = 24
 
     def __init__(self, id_registro: str, fecha: date, horas_trabajadas: float,
                  proyecto: Proyecto, descripcion: str):
@@ -46,8 +39,8 @@ class RegistroTiempo:
     @horas_trabajadas.setter
     def horas_trabajadas(self, horas: float) -> None:
         valor = validar_numero(horas, "horas_trabajadas")
-        if not 0 < valor <= self.HORAS_MAXIMAS_DIA:
-            raise ValueError(f"Las horas trabajadas deben estar entre 0 y {self.HORAS_MAXIMAS_DIA}.")
+        if not 0 < valor <= self.horas_maximas_dia:
+            raise ValueError(f"Las horas trabajadas deben estar entre 0 y {self.horas_maximas_dia}.")
         self._horas_trabajadas = valor
 
     @property
@@ -87,7 +80,7 @@ class RegistroTiempo:
         self.proyecto._agregar_registro(self)
 
     def __str__(self) -> str:
-        return (f"RegistroTiempo | ID: {self.id_registro} | Fecha: {self.fecha.isoformat()} | "
+        return (f"RegistroTiempo | ID: {self.id_registro} | Fecha: {self.fecha.strftime('%d-%m-%Y')} | "
                 f"Horas: {self.horas_trabajadas} | Proyecto: {self.proyecto.id_proyecto}")
 
     def __repr__(self) -> str:

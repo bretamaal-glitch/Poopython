@@ -13,10 +13,7 @@ if TYPE_CHECKING:
 
 
 class Empleado(Persona):
-    """
-    Modelo (DTO) para la entidad Empleado. Hereda de Persona.
-    Tabla: empleado (id_empleado, id_persona, fecha_contrato, salario, estado, id_departamento).
-    """
+    
     ESTADOS: set[str] = {"Activo", "Inactivo"}
 
     def __init__(self, id_persona: str, nombre: str, email: str, telefono: str, direccion: str,

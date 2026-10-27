@@ -6,7 +6,7 @@ from models.validaciones_dao import generar_id
 
 
 class RegistroTiempoController(ControladorBase):
-    """Operaciones de la pantalla de registros de tiempo."""
+    
 
     def __init__(self):
         super().__init__("Registros de tiempo", [
@@ -19,7 +19,7 @@ class RegistroTiempoController(ControladorBase):
 
     def _mostrar(self, titulo: str, registros: list[RegistroTiempo]) -> None:
         lineas = [
-            f"{r.id_registro} | {r.fecha.isoformat()} | {r.horas_trabajadas} h | "
+            f"{r.id_registro} | {r.fecha.strftime('%d-%m-%Y')} | {r.horas_trabajadas} h | "
             f"Empleado: {r.id_empleado} | Proyecto: {r.proyecto.id_proyecto} | {r.descripcion}"
             for r in registros
         ]
@@ -44,7 +44,7 @@ class RegistroTiempoController(ControladorBase):
         fecha = v.pedir_fecha("Fecha del trabajo")
         horas = v.pedir_numero("Horas trabajadas (entre 0 y 24)", minimo=0, maximo=24)
         descripcion = v.pedir_texto("Descripción de las tareas")
-        # registrar_horas valida estado, asignación y fechas antes de crear el registro
+        
         registro = empleado.registrar_horas(generar_id("R", "registro_tiempo", "id_registro"),
                                             fecha, horas, descripcion, proyecto)
         if RegistroTiempoDAO.crear(registro):
@@ -81,7 +81,7 @@ class RegistroTiempoController(ControladorBase):
         if fecha is not None:
             registro.fecha = fecha
         if horas is not None:
-            registro.horas_trabajadas = horas   # el setter valida el rango
+            registro.horas_trabajadas = horas   
         if descripcion is not None:
             registro.descripcion = descripcion
         if RegistroTiempoDAO.actualizar(registro):

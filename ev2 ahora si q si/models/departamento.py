@@ -42,7 +42,7 @@ class Departamento:
     def gerente(self, gerente: Empleado) -> None:
         if not isinstance(gerente, Empleado):
             raise TypeError("El gerente debe ser una instancia de la clase Empleado.")
-        self.asignar_empleado(gerente)  # el gerente siempre pertenece al departamento
+        self.asignar_empleado(gerente)  
         self._gerente = gerente
 
     @property
@@ -50,7 +50,7 @@ class Departamento:
         return tuple(self._empleados)
 
     def asignar_empleado(self, empleado: Empleado) -> None:
-        """Un empleado pertenece a un solo departamento: si cambia, se retira del anterior."""
+        
         if not isinstance(empleado, Empleado):
             raise TypeError("El empleado debe ser una instancia de la clase Empleado.")
         if empleado in self._empleados:

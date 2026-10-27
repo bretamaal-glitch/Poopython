@@ -1,10 +1,6 @@
 from datetime import date
 
 class MainView:
-    """
-    Interfaz de consola. Muestra menús y pide datos. Cada entrada se valida
-    y se vuelve a pedir si no es correcta, para que el programa no se interrumpa.
-    """
 
     MENU_PRINCIPAL = [
         "Empleados",
@@ -42,10 +38,6 @@ class MainView:
         return input(f"{pregunta} (s/n): ").strip().lower() == "s"
 
     def pedir_texto(self, etiqueta: str, actual: str | None = None) -> str | None:
-        """
-        Pide un texto obligatorio. Si se pasa 'actual', un Enter vacío devuelve None
-        (significa que se conserva el valor actual).
-        """
         sufijo = f" [{actual}]" if actual is not None else ""
         while True:
             valor = input(f"{etiqueta}{sufijo}: ").strip()

@@ -7,7 +7,7 @@ from models.validaciones_dao import generar_id
 
 
 class EmpleadoController(ControladorBase):
-    """CRUD"""
+    
 
     def __init__(self):
         super().__init__("Empleados", [
@@ -103,7 +103,7 @@ class EmpleadoController(ControladorBase):
         if departamento is None:
             self.view.mostrar_mensaje(f"No existe un departamento con ID {id_departamento}.")
             return
-        departamento.asignar_empleado(empleado)   # lanza ValueError si es el gerente de otro departamento
+        departamento.asignar_empleado(empleado)   
         if DepartamentoDAO.actualizar(departamento):
             self.view.mostrar_mensaje(f"Empleado asignado a {departamento.nombre}.")
         else:
@@ -133,7 +133,7 @@ class EmpleadoController(ControladorBase):
         if proyecto is None:
             self.view.mostrar_mensaje("El empleado no está asignado a ese proyecto.")
             return
-        empleado.desasignar_proyecto(proyecto)   # lanza ValueError si tiene registros en él
+        empleado.desasignar_proyecto(proyecto)  
         if EmpleadoDAO.actualizar(empleado):
             self.view.mostrar_mensaje(f"Empleado desasignado de {proyecto.nombre}.")
         else:

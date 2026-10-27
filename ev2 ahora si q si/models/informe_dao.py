@@ -9,10 +9,6 @@ from models.validaciones_dao import consultar, validar_id, validar_no_existe
 
 
 class InformeDAO:
-    """
-    Data Access Object para la entidad Informe.
-    El informe no tiene claves foráneas: se guarda su texto generado.
-    """
 
     @staticmethod
     def crear(informe: Informe) -> bool:

@@ -11,12 +11,6 @@ from models.validaciones_dao import consultar, existe, validar_no_existe
 
 
 class UsuarioDAO:
-    """
-    Data Access Object para la entidad Usuario.
-    Cada usuario corresponde a una persona (1 a 1). Si su persona todavía no está
-    en la base, se guarda junto con el usuario.
-    """
-
     @staticmethod
     def crear(usuario: Usuario) -> bool:
         conn = Database().get_connection()

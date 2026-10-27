@@ -11,12 +11,7 @@ from models.validaciones_dao import (
 
 
 class ProyectoDAO:
-    """
-    Data Access Object para la entidad Proyecto.
-    La relación con empleados se guarda en empleado_proyecto. Cada asignación se guarda
-    aquí si el empleado ya existe; si no, la guarda EmpleadoDAO.crear.
-    Los registros de tiempo se guardan con RegistroTiempoDAO.
-    """
+    
     @staticmethod
     def _cargar(id_proyecto: str, cache: dict) -> Proyecto | None:
         clave = ("proyecto", id_proyecto)
@@ -39,13 +34,13 @@ class ProyectoDAO:
             return
         cache[marca] = True
 
-        from models.empleado_dao import EmpleadoDAO          # importaciones locales (evitan ciclo)
+        from models.empleado_dao import EmpleadoDAO          
         from models.registro_tiempo_dao import RegistroTiempoDAO
 
         for fila in consultar("SELECT id_empleado FROM empleado_proyecto WHERE id_proyecto = ?",
                               (proyecto.id_proyecto,)):
             empleado = EmpleadoDAO._cargar(fila["id_empleado"], cache)
-            empleado.asignar_proyecto(proyecto)              # no hace nada si ya estaba
+            empleado.asignar_proyecto(proyecto)              
 
         for fila in consultar("SELECT id_registro FROM registro_tiempo WHERE id_proyecto = ?",
                               (proyecto.id_proyecto,)):
@@ -122,7 +117,7 @@ class ProyectoDAO:
             )
             actualizado = cursor.rowcount > 0
 
-            # Sincroniza las asignaciones. Si se quita una que tiene registros, SQLite lo impide.
+            
             if ids_empleados:
                 cursor.execute(
                     f"DELETE FROM empleado_proyecto WHERE id_proyecto = ? AND id_empleado NOT IN ({marcas(ids_empleados)})",

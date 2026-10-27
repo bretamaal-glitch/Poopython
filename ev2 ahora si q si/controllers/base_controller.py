@@ -4,15 +4,12 @@ from views.main_view import MainView
 
 
 class ControladorBase:
-    """
-    Base común de los controladores: recorre un submenú y ejecuta la acción elegida.
-    Cualquier error de validación o de base de datos se muestra y el menú sigue funcionando.
-    """
+    
 
     def __init__(self, titulo: str, acciones: list[tuple[str, callable]]):
         self.view = MainView()
         self.titulo = titulo
-        self.acciones = acciones   # lista de (texto del menú, método a ejecutar)
+        self.acciones = acciones   
 
     def ejecutar(self) -> None:
         textos = [texto for texto, _ in self.acciones]

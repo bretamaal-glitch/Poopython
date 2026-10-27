@@ -8,7 +8,7 @@ from models.validaciones_dao import generar_id
 
 
 class InformeController(ControladorBase):
-    """Genera informes con los datos del sistema y los exporta a CSV (abre en Excel)."""
+    
 
     TIPOS = [
         ("Empleados", "empleado"),

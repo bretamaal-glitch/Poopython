@@ -6,7 +6,7 @@ from models.validaciones_dao import generar_id
 
 
 class UsuarioController(ControladorBase):
-    """CRUD de usuarios del sistema. Cada usuario corresponde a una persona registrada."""
+    
 
     def __init__(self):
         super().__init__("Usuarios", [
@@ -26,7 +26,8 @@ class UsuarioController(ControladorBase):
         nombre_usuario = v.pedir_texto("Nombre de usuario")
         contrasena = v.pedir_texto("Contraseña")
         rol = v.pedir_texto("Rol (administrador / empleado)")
-        usuario = Usuario(generar_id("U", "usuario", "id_usuario"), nombre_usuario, contrasena, rol, persona)
+        usuario = Usuario(generar_id("U", "usuario", "id_usuario"), nombre_usuario, "", rol, persona)
+        usuario.establecer_contrasena(contrasena)
         if UsuarioDAO.crear(usuario):
             v.mostrar_mensaje(f"Usuario creado con ID {usuario.id_usuario}.")
         else:
@@ -50,7 +51,7 @@ class UsuarioController(ControladorBase):
         if nombre_usuario is not None:
             usuario.nombre_usuario = nombre_usuario
         if contrasena is not None:
-            usuario.contrasena = contrasena
+            usuario.establecer_contrasena(contrasena)
         if rol is not None:
             usuario.rol = rol
         if UsuarioDAO.actualizar(usuario):

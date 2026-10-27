@@ -25,17 +25,14 @@ COLUMNAS_PERMITIDAS = {
 
 
 def validar_id(valor, campo: str) -> str:
-    """Devuelve el id sin espacios y en mayúsculas, igual que normalizan los modelos."""
     return validar_texto(valor, campo).upper()
 
 
 def fecha_a_texto(fecha: date) -> str:
-    """Convierte una fecha a texto ISO (AAAA-MM-DD) para guardarla en SQLite."""
     return fecha.isoformat()
 
 
 def texto_a_fecha(texto: str, campo: str) -> date:
-    """Convierte el texto ISO de la base de datos en un objeto date."""
     try:
         return date.fromisoformat(texto)
     except (TypeError, ValueError):
@@ -43,12 +40,10 @@ def texto_a_fecha(texto: str, campo: str) -> date:
 
 
 def marcas(valores) -> str:
-    """Genera los signos de interrogación para una cláusula IN, por ejemplo '?, ?, ?'."""
     return ", ".join("?" for _ in valores)
 
 
 def consultar(sql: str, params: tuple = ()) -> list:
-    """Ejecuta una consulta de lectura y devuelve todas sus filas, cerrando la conexión."""
     conn = Database().get_connection()
     try:
         return conn.execute(sql, params).fetchall()
@@ -57,7 +52,6 @@ def consultar(sql: str, params: tuple = ()) -> list:
 
 
 def existe(tabla: str, columna: str, valor) -> bool:
-    """Indica si hay al menos un registro con ese valor en esa columna."""
     if tabla not in TABLAS_PERMITIDAS or columna not in COLUMNAS_PERMITIDAS:
         raise ValueError(f"Tabla o columna no permitida: {tabla}.{columna}")
     return len(consultar(f"SELECT 1 FROM {tabla} WHERE {columna} = ? LIMIT 1", (valor,))) > 0
@@ -74,7 +68,6 @@ def validar_no_existe(tabla: str, columna: str, valor, campo: str) -> None:
 
 
 def generar_id(prefijo: str, tabla: str, columna: str) -> str:
-    """Devuelve un id nuevo y libre con formato PREFIJO-0001 (asignación automática)."""
     if tabla not in TABLAS_PERMITIDAS or columna not in COLUMNAS_PERMITIDAS:
         raise ValueError(f"Tabla o columna no permitida: {tabla}.{columna}")
     n = len(consultar(f"SELECT {columna} FROM {tabla}")) + 1
@@ -84,7 +77,6 @@ def generar_id(prefijo: str, tabla: str, columna: str) -> str:
 
 
 def validar_asignacion(id_empleado: str, id_proyecto: str) -> None:
-    """Un registro de tiempo solo puede existir si el empleado está asignado al proyecto."""
     filas = consultar(
         "SELECT 1 FROM empleado_proyecto WHERE id_empleado = ? AND id_proyecto = ?",
         (id_empleado, id_proyecto)

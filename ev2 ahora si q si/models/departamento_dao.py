@@ -11,11 +11,7 @@ from models.validaciones_dao import (
 
 
 class DepartamentoDAO:
-    """
-    Data Access Object para la entidad Departamento.
-    El gerente es un empleado y debe existir en la base antes de guardar el departamento.
-    Los miembros se actualizan aquí solo si ya existen; los demás se guardan al crearse.
-    """
+    
     @staticmethod
     def _cargar(id_departamento: str, cache: dict) -> Departamento | None:
         clave = ("departamento", id_departamento)
@@ -26,9 +22,8 @@ class DepartamentoDAO:
             return None
         fila = filas[0]
 
-        from models.empleado_dao import EmpleadoDAO   # importación local (evita ciclo)
-
-        # Mientras se construye, el gerente no vuelve a pedir este departamento.
+        from models.empleado_dao import EmpleadoDAO   
+        
         en_construccion = ("en_construccion", "departamento", id_departamento)
         cache[en_construccion] = True
         gerente = EmpleadoDAO._cargar(fila["id_gerente"], cache)
@@ -38,7 +33,7 @@ class DepartamentoDAO:
 
         for f in consultar("SELECT id_empleado FROM empleado WHERE id_departamento = ?", (id_departamento,)):
             miembro = EmpleadoDAO._cargar(f["id_empleado"], cache)
-            departamento.asignar_empleado(miembro)   # no hace nada si ya es miembro
+            departamento.asignar_empleado(miembro)   
         return departamento
 
     @staticmethod
@@ -114,7 +109,7 @@ class DepartamentoDAO:
             )
             actualizado = cursor.rowcount > 0
 
-            # Quien ya no es miembro queda sin departamento; los miembros actuales se asignan.
+            
             if ids:
                 cursor.execute(
                     f"UPDATE empleado SET id_departamento = NULL "

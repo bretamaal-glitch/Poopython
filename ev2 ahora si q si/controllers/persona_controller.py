@@ -5,7 +5,7 @@ from models.validaciones_dao import generar_id
 
 
 class PersonaController(ControladorBase):
-    """CRUD de personas (datos de contacto). Los empleados y usuarios se basan en una persona."""
+    
 
     def __init__(self):
         super().__init__("Personas", [

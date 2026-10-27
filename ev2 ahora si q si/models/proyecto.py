@@ -11,11 +11,7 @@ if TYPE_CHECKING:
 
 
 class Proyecto:
-    """
-    Modelo (DTO) para la entidad Proyecto.
-    Tabla: proyecto (id_proyecto, nombre, descripcion, fecha_inicio).
-    La relación con empleados se guarda en la tabla empleado_proyecto.
-    """
+    
 
     def __init__(self, id_proyecto: str, nombre: str, descripcion: str, fecha_inicio: date):
         self.id_proyecto = id_proyecto
@@ -66,11 +62,11 @@ class Proyecto:
         return tuple(self._registros)
 
     def asignar_empleado(self, empleado: Empleado) -> None:
-        # Importación local: empleado.py importa este módulo, así que evitamos el ciclo.
+        
         from models.empleado import Empleado
         if not isinstance(empleado, Empleado):
             raise TypeError("El empleado debe ser una instancia de la clase Empleado.")
-        empleado.asignar_proyecto(self)   # actualiza ambos lados
+        empleado.asignar_proyecto(self)   
 
     def _agregar_empleado(self, empleado: Empleado) -> None:
         if empleado not in self._empleados:
@@ -86,7 +82,7 @@ class Proyecto:
 
     def __str__(self) -> str:
         return (f"Proyecto | ID: {self.id_proyecto} | Nombre: {self.nombre} | "
-                f"Inicio: {self.fecha_inicio.isoformat()} | Empleados: {len(self._empleados)}")
+                f"Inicio: {self.fecha_inicio.strftime('%d-%m-%Y')} | Empleados: {len(self._empleados)}")
 
     def __repr__(self) -> str:
         return (f"Proyecto(id_proyecto='{self.id_proyecto}', nombre='{self.nombre}', "

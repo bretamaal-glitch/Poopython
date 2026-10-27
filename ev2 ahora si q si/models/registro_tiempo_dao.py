@@ -12,11 +12,6 @@ from models.validaciones_dao import (
 
 
 class RegistroTiempoDAO:
-    """
-    Data Access Object para la entidad RegistroTiempo.
-    Un registro pertenece a un empleado y a un proyecto. Solo puede guardarse si el
-    empleado está asignado a ese proyecto (lo exige la clave compuesta de la tabla).
-    """
 
     @staticmethod
     def _cargar(id_registro: str, cache: dict) -> RegistroTiempo | None:
@@ -28,11 +23,11 @@ class RegistroTiempoDAO:
             return None
         fila = filas[0]
 
-        from models.empleado_dao import EmpleadoDAO      # importaciones locales (evitan ciclo)
+        from models.empleado_dao import EmpleadoDAO      
         from models.proyecto_dao import ProyectoDAO
 
         proyecto = ProyectoDAO._cargar(fila["id_proyecto"], cache)
-        # Mientras se cargaba el proyecto, este mismo registro pudo crearse; si es así, se reutiliza.
+        
         if clave in cache:
             return cache[clave]
 
@@ -40,7 +35,7 @@ class RegistroTiempoDAO:
                                   fila["horas_trabajadas"], proyecto, fila["descripcion"])
         cache[clave] = registro
         empleado = EmpleadoDAO._cargar(fila["id_empleado"], cache)
-        empleado._restaurar_registro(registro)   # lo vincula al empleado y al proyecto
+        empleado._restaurar_registro(registro)   
         return registro
 
     @staticmethod

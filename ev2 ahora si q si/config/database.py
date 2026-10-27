@@ -50,6 +50,7 @@ class Database:
                     id_persona TEXT NOT NULL UNIQUE,
                     fecha_contrato TEXT NOT NULL,
                     salario REAL NOT NULL CHECK (salario >= 0),
+                    direccion TEXT NOT NULL,
                     estado TEXT NOT NULL DEFAULT 'Activo' CHECK (estado IN ('Activo', 'Inactivo')),
                     id_departamento TEXT,
                     FOREIGN KEY(id_persona) REFERENCES persona(id_persona) ON DELETE CASCADE,
@@ -123,3 +124,4 @@ if __name__ == "__main__":
     db = Database()
     db.init_db()
     print("Base de datos inicializada correctamente.")
+

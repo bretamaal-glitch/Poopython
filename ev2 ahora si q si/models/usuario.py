@@ -1,3 +1,7 @@
+import hashlib
+import hmac
+import secrets
+
 from models.validaciones import validar_texto
 from models.persona import Persona
 
@@ -64,10 +68,25 @@ class Usuario:
                 f"La contraseña debe tener al menos {cls.LONGITUD_MINIMA_CLAVE} caracteres.")
         return clave
 
+    @classmethod
+    def generar_hash(cls, clave: str) -> str:
+        """Devuelve 'sal$hash'. La sal es aleatoria, así que dos claves iguales dan hashes distintos."""
+        sal = secrets.token_hex(16)
+        digest = hashlib.pbkdf2_hmac("sha256", clave.encode("utf-8"), sal.encode("utf-8"),
+                                     cls.ITERACIONES_HASH).hex()
+        return f"{sal}${digest}"
+
+    def establecer_contrasena(self, clave: str) -> None:
+        """Valida la clave nueva y guarda solo su hash."""
+        self.contrasena = self.generar_hash(self._validar_clave(clave))
+
     def autenticar(self, clave: str) -> bool:
-        if not isinstance(clave, str):
+        if not isinstance(clave, str) or "$" not in self.contrasena:
             return False
-        return self.contrasena == clave
+        sal, _, digest_guardado = self.contrasena.partition("$")
+        digest = hashlib.pbkdf2_hmac("sha256", clave.encode("utf-8"), sal.encode("utf-8"),
+                                     self.ITERACIONES_HASH).hex()
+        return hmac.compare_digest(digest, digest_guardado)
 
     def verificar_permiso(self, permiso: str) -> bool:
         return permiso in self.ROLES[self.rol]

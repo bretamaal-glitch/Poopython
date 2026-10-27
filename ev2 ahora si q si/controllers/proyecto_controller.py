@@ -5,7 +5,7 @@ from models.validaciones_dao import generar_id
 
 
 class ProyectoController(ControladorBase):
-    """Operaciones de la pantalla de proyectos (CRUD, búsqueda y empleados asignados)."""
+    
 
     def __init__(self):
         super().__init__("Proyectos", [
@@ -37,7 +37,7 @@ class ProyectoController(ControladorBase):
 
     def _mostrar(self, titulo: str, proyectos: list[Proyecto]) -> None:
         lineas = [
-            f"{p.id_proyecto} | {p.nombre} | Inicio: {p.fecha_inicio.isoformat()} | Empleados: {len(p.empleados)}"
+            f"{p.id_proyecto} | {p.nombre} | Inicio: {p.fecha_inicio.strftime('%d-%m-%Y')} | Empleados: {len(p.empleados)}"
             for p in proyectos
         ]
         self.view.mostrar_lista(titulo, lineas)

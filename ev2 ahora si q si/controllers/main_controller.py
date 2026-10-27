@@ -7,7 +7,7 @@ from views.main_view import MainView
 
 
 class MainController:
-    """Menú principal: delega cada opción en su controlador."""
+    
 
     def __init__(self):
         self.view = MainView()
